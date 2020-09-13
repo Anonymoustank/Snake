@@ -5,6 +5,7 @@ GREEN = (20, 255, 140)
 WHITE = (255, 255, 255)
 RED = (255, 0, 0)
 BLACK = (0, 0, 0)
+LIGHT_GREEN = (144, 238, 144)
 HEIGHT, WIDTH = 640, 720
 pg.init()
 screen = pg.display.set_mode((WIDTH, HEIGHT))
@@ -102,9 +103,15 @@ while running:
             
     for i in all_snakes:
         if i.rect.colliderect(apple):
-            apple.rect.x = random.randint(1, (WIDTH // size) - 1) * size
-            apple.rect.y = random.randint(1, (HEIGHT // size) - 1) * size
-            all_snakes.append(Block(GREEN, size, size))
+            not_touching = False
+            while not_touching == False:
+                not_touching = True
+                apple.rect.x = random.randint(1, (WIDTH // size) - 1) * size
+                apple.rect.y = random.randint(1, (HEIGHT // size) - 1) * size
+                for j in all_snakes:
+                    if j.rect.colliderect(apple):
+                        not_touching = False
+            all_snakes.append(Block(LIGHT_GREEN, size, size))
             batch.add(all_snakes[len(all_snakes) - 1])
             all_snakes[len(all_snakes) - 1].rect.x = -150
             all_snakes[len(all_snakes) - 1].rect.y = 100
