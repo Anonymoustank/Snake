@@ -1,5 +1,6 @@
 import pygame as pg
 import random
+import time
 GREEN = (20, 255, 140)
 WHITE = (255, 255, 255)
 RED = (255, 0, 0)
@@ -15,6 +16,8 @@ textsurface = myfont.render("Press any arrow key to start", True, (WHITE))
 started = False
 has_won = False
 moving = False
+
+current_time = time.perf_counter()
 
 class Block(pg.sprite.Sprite):
     def __init__(self, color, width, height):
@@ -70,20 +73,22 @@ while running:
         started = True
 
     distance = 5
-    new_x, new_y = all_locations[0]
-    if moving == "Up":
-        new_y -= distance
-    elif moving == "Down":
-        new_y += distance
-    elif moving == "Right":
-        new_x += distance
-    elif moving == "Left":
-        new_x -= distance
-    del(all_locations[len(all_locations) - 1])
-    all_locations = [(new_x, new_y)] + all_locations
-    for i in range(len(all_locations)):
-        all_snakes[i].rect.x = all_locations[i][0]
-        all_snakes[i].rect.y = all_locations[i][1]
+    if abs(current_time - time.perf_counter()) >= (1/60):
+        new_x, new_y = all_locations[0]
+        current_time = time.perf_counter()
+        if moving == "Up":
+            new_y -= distance
+        elif moving == "Down":
+            new_y += distance
+        elif moving == "Right":
+            new_x += distance
+        elif moving == "Left":
+            new_x -= distance
+        del(all_locations[len(all_locations) - 1])
+        all_locations = [(new_x, new_y)] + all_locations
+        for i in range(len(all_locations)):
+            all_snakes[i].rect.x = int(all_locations[i][0])
+            all_snakes[i].rect.y = int(all_locations[i][1])
 pg.quit()
 
 
