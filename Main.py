@@ -44,7 +44,7 @@ all_snakes[0].rect.x = 50
 all_snakes[0].rect.y = 50
 all_locations = [(HEIGHT//2, WIDTH//2)]
 batch.add(all_snakes[0])
-apple = Block(RED, size, size)
+apple = Block(RED, size//2, size//2)
 apple.rect.x = random.randint(100, WIDTH - 100)
 apple.rect.y = random.randint(100, HEIGHT - 100)
 
@@ -70,6 +70,10 @@ while running:
         death_screen = myfont.render("You died", True, (WHITE))
         text_rect = death_screen.get_rect(center = (WIDTH // 2, HEIGHT // 2))
         screen.blit(death_screen, text_rect)
+    elif has_won == True:
+        victory_screen = myfont.render("You won!", True, (WHITE))
+        text_rect = victory_screen.get_rect(center = (WIDTH // 2, HEIGHT // 2))
+        screen.blit(victory_screen, text_rect)
 
     pg.display.update()
 
@@ -82,6 +86,11 @@ while running:
         if all_snakes[0].rect.colliderect(all_snakes[i]):
             dead = True
             break
+    
+    if len(all_snakes) == pg.display.update() and has_won == False:
+        screen.fill(BLACK)
+        pg.display.update()
+        has_won = True
             
     for i in all_snakes:
         if i.rect.colliderect(apple):
