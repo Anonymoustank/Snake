@@ -45,7 +45,7 @@ all_snakes[0].rect.x = 50
 all_snakes[0].rect.y = 50
 all_locations = [(HEIGHT//2, WIDTH//2)]
 batch.add(all_snakes[0])
-apple = Block(RED, size//2, size//2)
+apple = Block(RED, size, size)
 apple.rect.x = random.randint(100, WIDTH - 100)
 apple.rect.y = random.randint(100, HEIGHT - 100)
 
