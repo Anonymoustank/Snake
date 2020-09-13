@@ -78,6 +78,11 @@ while running:
     elif all_snakes[0].rect.y >= HEIGHT or all_snakes[0].rect.y < 0:
         dead = True
 
+    for i in range(1, len(all_snakes)):
+        if all_snakes[0].rect.colliderect(all_snakes[i]):
+            dead = True
+            break
+            
     for i in all_snakes:
         if i.rect.colliderect(apple):
             apple.rect.x = random.randint(1, (WIDTH // size) - 1) * size
