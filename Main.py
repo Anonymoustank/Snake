@@ -66,14 +66,22 @@ while running:
         apple_group.update()
         batch.draw(screen)
         apple_group.draw(screen)
+        score = myfont.render("Score: " + str(len(all_snakes) - 1), True, (WHITE))
+        screen.blit(score, (WIDTH - 125, 0))
     elif dead == True:
         death_screen = myfont.render("You died", True, (WHITE))
         text_rect = death_screen.get_rect(center = (WIDTH // 2, HEIGHT // 2))
         screen.blit(death_screen, text_rect)
+        score = myfont.render("Final Score: " + str(len(all_snakes) - 1), True, (WHITE))
+        text_rect = score.get_rect(center = (WIDTH // 2, 2 * (HEIGHT // 3)))
+        screen.blit(score, text_rect)
     elif has_won == True:
         victory_screen = myfont.render("You won!", True, (WHITE))
         text_rect = victory_screen.get_rect(center = (WIDTH // 2, HEIGHT // 2))
         screen.blit(victory_screen, text_rect)
+        score = myfont.render("Final Score: " + str(len(all_snakes) - 1), True, (WHITE))
+        text_rect = score.get_rect(center = (WIDTH // 2, 2 * (HEIGHT // 3)))
+        screen.blit(score, text_rect)
 
     pg.display.update()
 
