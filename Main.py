@@ -9,13 +9,17 @@ HEIGHT, WIDTH = 640, 720
 pg.init()
 screen = pg.display.set_mode((WIDTH, HEIGHT))
 pg.display.set_caption("Snake")
-
+clock = pg.time.Clock()
 myfont = pg.font.SysFont('verdana', 25)
+
+loop_delay = 0 #how many loops to not have the last snake part move
 
 textsurface = myfont.render("Press any arrow key to start", True, (WHITE))
 started = False
 has_won = False
 moving = False
+
+size = 25
 
 current_time = time.perf_counter()
 
@@ -34,7 +38,7 @@ class Block(pg.sprite.Sprite):
         self.rect.center = (int(width/2), int(height/2))
 
 batch = pg.sprite.Group()
-all_snakes = [Block(GREEN, 50, 50)]
+all_snakes = [Block(GREEN, size, size)]
 all_locations = [(HEIGHT//2, WIDTH//2)]
 batch.add(all_snakes[0])
 apple = Block(RED, 15, 15)
@@ -46,6 +50,7 @@ apple_group.add(apple)
 running = True
 
 while running:
+    clock.tick(60)
     for event in pg.event.get():
         if event.type == pg.QUIT:
             running = False
@@ -58,6 +63,14 @@ while running:
         batch.draw(screen)
         apple_group.draw(screen)
     pg.display.update()
+
+    for i in all_snakes:
+        if i.rect.colliderect(apple):
+            apple.rect.x = 5000
+            all_snakes.append(Block(GREEN, size, size))
+            batch.add(all_snakes[len(all_snakes) - 1])
+            all_snakes[len(all_snakes) - 1].rect.x = -150
+            all_snakes[len(all_snakes) - 1].rect.y = 100
 
     keys = pg.key.get_pressed()
     if has_won == False:
@@ -72,8 +85,8 @@ while running:
     if moving != False:
         started = True
 
-    distance = 5
-    if abs(current_time - time.perf_counter()) >= (1/60):
+    distance = size
+    if abs(current_time - time.perf_counter()) >= (1/4):
         new_x, new_y = all_locations[0]
         current_time = time.perf_counter()
         if moving == "Up":
@@ -84,11 +97,21 @@ while running:
             new_x += distance
         elif moving == "Left":
             new_x -= distance
-        del(all_locations[len(all_locations) - 1])
-        all_locations = [(new_x, new_y)] + all_locations
-        for i in range(len(all_locations)):
-            all_snakes[i].rect.x = int(all_locations[i][0])
-            all_snakes[i].rect.y = int(all_locations[i][1])
+        if len(all_snakes) == len(all_locations) and loop_delay == 0:
+            del(all_locations[len(all_locations) - 1])
+        if loop_delay == 0:
+            all_locations = [(new_x, new_y)] + all_locations
+        else:
+            all_locations[0] = (new_x, new_y)
+        if loop_delay > 0:
+            loop_delay -= 1
+            for i in range(len(all_snakes) - 1):
+                all_snakes[i].rect.x = int(all_locations[i][0])
+                all_snakes[i].rect.y = int(all_locations[i][1])
+        else:
+            for i in range(len(all_snakes)):
+                all_snakes[i].rect.x = int(all_locations[i][0])
+                all_snakes[i].rect.y = int(all_locations[i][1])
 pg.quit()
 
 
