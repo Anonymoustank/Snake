@@ -150,7 +150,7 @@ while running:
                 all_snakes[i].rect.x = int(all_locations[i][0])
                 all_snakes[i].rect.y = int(all_locations[i][1])
         else:
-            for i in range(len(all_snakes)):
+            for i in range(len(all_locations)):
                 all_snakes[i].rect.x = int(all_locations[i][0])
                 all_snakes[i].rect.y = int(all_locations[i][1])
 pg.quit()
