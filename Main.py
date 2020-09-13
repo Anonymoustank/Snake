@@ -46,8 +46,8 @@ all_snakes[0].rect.y = 50
 all_locations = [(HEIGHT//2, WIDTH//2)]
 batch.add(all_snakes[0])
 apple = Block(RED, size, size)
-apple.rect.x = random.randint(100, WIDTH - 100)
-apple.rect.y = random.randint(100, HEIGHT - 100)
+apple.rect.x = random.randint(1, (WIDTH // size) - 1) * size
+apple.rect.y = random.randint(1, (HEIGHT // size) - 1) * size
 
 apple_group = pg.sprite.Group()
 apple_group.add(apple)
