@@ -6,7 +6,7 @@ WHITE = (255, 255, 255)
 RED = (255, 0, 0)
 BLACK = (0, 0, 0)
 LIGHT_GREEN = (144, 238, 144)
-HEIGHT, WIDTH = 640, 720
+HEIGHT, WIDTH = 640, 640
 pg.init()
 screen = pg.display.set_mode((WIDTH, HEIGHT))
 pg.display.set_caption("Snake")
