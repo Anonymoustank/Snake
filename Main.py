@@ -13,22 +13,16 @@ pg.display.set_caption("Snake")
 clock = pg.time.Clock()
 myfont = pg.font.SysFont('verdana', 25)
 
-loop_delay = 0
-
 textsurface = myfont.render("Press any arrow key to start", True, (WHITE))
 started = False
 has_won = False
 moving = False
 dead = False
-
 size = 40
-
 current_time = time.perf_counter()
-
 class Block(pg.sprite.Sprite):
     def __init__(self, color, width, height):
         super().__init__()
-        
         self.image = pg.Surface([width, height])
         self.image.fill(WHITE)
         self.image.set_colorkey(WHITE)
@@ -145,21 +139,12 @@ while running:
             new_x += distance
         elif moving == "Left":
             new_x -= distance
-        if len(all_snakes) == len(all_locations) and loop_delay == 0:
+        if len(all_snakes) == len(all_locations):
             del(all_locations[len(all_locations) - 1])
-        if loop_delay == 0:
-            all_locations = [(new_x, new_y)] + all_locations
-        else:
-            all_locations[0] = (new_x, new_y)
-        if loop_delay > 0:
-            loop_delay -= 1
-            for i in range(len(all_snakes) - 1):
-                all_snakes[i].rect.x = int(all_locations[i][0])
-                all_snakes[i].rect.y = int(all_locations[i][1])
-        else:
-            for i in range(len(all_locations)):
-                all_snakes[i].rect.x = int(all_locations[i][0])
-                all_snakes[i].rect.y = int(all_locations[i][1])
+        all_locations = [(new_x, new_y)] + all_locations
+        for i in range(len(all_locations)):
+            all_snakes[i].rect.x = int(all_locations[i][0])
+            all_snakes[i].rect.y = int(all_locations[i][1])
 pg.quit()
 
 
