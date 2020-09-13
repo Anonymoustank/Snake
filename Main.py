@@ -12,14 +12,14 @@ pg.display.set_caption("Snake")
 clock = pg.time.Clock()
 myfont = pg.font.SysFont('verdana', 25)
 
-loop_delay = 0 #how many loops to not have the last snake part move
+loop_delay = 0
 
 textsurface = myfont.render("Press any arrow key to start", True, (WHITE))
 started = False
 has_won = False
 moving = False
 
-size = 25
+size = 40
 
 current_time = time.perf_counter()
 
@@ -41,7 +41,7 @@ batch = pg.sprite.Group()
 all_snakes = [Block(GREEN, size, size)]
 all_locations = [(HEIGHT//2, WIDTH//2)]
 batch.add(all_snakes[0])
-apple = Block(RED, 15, 15)
+apple = Block(RED, size, size)
 apple.rect.x = random.randint(100, WIDTH - 100)
 apple.rect.y = random.randint(100, HEIGHT - 100)
 
@@ -66,7 +66,8 @@ while running:
 
     for i in all_snakes:
         if i.rect.colliderect(apple):
-            apple.rect.x = 5000
+            apple.rect.x = random.randint(1, (WIDTH // size) - 1) * size
+            apple.rect.y = random.randint(1, (HEIGHT // size) - 1) * size
             all_snakes.append(Block(GREEN, size, size))
             batch.add(all_snakes[len(all_snakes) - 1])
             all_snakes[len(all_snakes) - 1].rect.x = -150
@@ -75,13 +76,17 @@ while running:
     keys = pg.key.get_pressed()
     if has_won == False:
         if keys[pg.K_a] or keys[pg.K_LEFT]:
-            moving = "Left"
+            if moving != "Right":
+                moving = "Left"
         elif keys[pg.K_d] or keys[pg.K_RIGHT]:
-            moving = "Right"
+            if moving != "Left":
+                moving = "Right"
         elif keys[pg.K_s] or keys[pg.K_DOWN]:
-            moving = "Down"
+            if moving != "Up":
+                moving = "Down"
         elif keys[pg.K_w] or keys[pg.K_UP]:
-            moving = "Up"
+            if moving != "Down":
+                moving = "Up"
     if moving != False:
         started = True
 
