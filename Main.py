@@ -18,6 +18,7 @@ textsurface = myfont.render("Press any arrow key to start", True, (WHITE))
 started = False
 has_won = False
 moving = False
+dead = False
 
 size = 40
 
@@ -39,6 +40,8 @@ class Block(pg.sprite.Sprite):
 
 batch = pg.sprite.Group()
 all_snakes = [Block(GREEN, size, size)]
+all_snakes[0].rect.x = 50
+all_snakes[0].rect.y = 50
 all_locations = [(HEIGHT//2, WIDTH//2)]
 batch.add(all_snakes[0])
 apple = Block(RED, size, size)
@@ -56,13 +59,24 @@ while running:
             running = False
     screen.fill(BLACK)
     if started == False:
-        screen.blit(textsurface,(0,0))
-    else:
+        text_rect = textsurface.get_rect(center = (WIDTH // 2, HEIGHT // 2))
+        screen.blit(textsurface, text_rect)
+    elif has_won == False and dead == False:
         batch.update()
         apple_group.update()
         batch.draw(screen)
         apple_group.draw(screen)
+    elif dead == True:
+        death_screen = myfont.render("You died", True, (WHITE))
+        text_rect = death_screen.get_rect(center = (WIDTH // 2, HEIGHT // 2))
+        screen.blit(death_screen, text_rect)
+
     pg.display.update()
+
+    if all_snakes[0].rect.x >= WIDTH or all_snakes[0].rect.x < 0:
+        dead = True
+    elif all_snakes[0].rect.y >= HEIGHT or all_snakes[0].rect.y < 0:
+        dead = True
 
     for i in all_snakes:
         if i.rect.colliderect(apple):
@@ -91,7 +105,7 @@ while running:
         started = True
 
     distance = size
-    if abs(current_time - time.perf_counter()) >= (1/4):
+    if abs(current_time - time.perf_counter()) >= (1/4) and has_won == False and dead == False:
         new_x, new_y = all_locations[0]
         current_time = time.perf_counter()
         if moving == "Up":
