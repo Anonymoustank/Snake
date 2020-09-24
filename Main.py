@@ -12,6 +12,7 @@ screen = pg.display.set_mode((WIDTH, HEIGHT))
 pg.display.set_caption("Snake")
 clock = pg.time.Clock()
 myfont = pg.font.SysFont('verdana', 25)
+previous_move = False
 
 textsurface = myfont.render("Press any arrow key to start", True, (WHITE))
 started = False
@@ -26,7 +27,6 @@ class Block(pg.sprite.Sprite):
         self.image = pg.Surface([width, height])
         self.image.fill(WHITE)
         self.image.set_colorkey(WHITE)
-
         # Draw the player (a rectangle)
         pg.draw.rect(self.image, color, [0, 0, width, height])
         # Fetch the rectangle object that has the dimensions of the image.
@@ -113,17 +113,18 @@ while running:
     keys = pg.key.get_pressed()
     if has_won == False:
         if keys[pg.K_a] or keys[pg.K_LEFT]:
-            if moving != "Right":
-                moving = "Left"
+            if moving != "Right" and previous_move == False:
+                moving, previous_move = "Left", moving
         elif keys[pg.K_d] or keys[pg.K_RIGHT]:
-            if moving != "Left":
-                moving = "Right"
+            if moving != "Left" and previous_move == False:
+                moving, previous_move = "Right", moving
         elif keys[pg.K_s] or keys[pg.K_DOWN]:
-            if moving != "Up":
-                moving = "Down"
+            if moving != "Up" and previous_move == False:
+                moving, previous_move = "Down", moving
         elif keys[pg.K_w] or keys[pg.K_UP]:
-            if moving != "Down":
-                moving = "Up"
+            if moving != "Down" and previous_move == False:
+                moving, previous_move = "Up", moving
+        print(moving, previous_move)
     if moving != False:
         started = True
 
@@ -145,6 +146,7 @@ while running:
         for i in range(len(all_locations)):
             all_snakes[i].rect.x = int(all_locations[i][0])
             all_snakes[i].rect.y = int(all_locations[i][1])
+        previous_move = False
 pg.quit()
 
 
