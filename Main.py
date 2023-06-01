@@ -124,7 +124,6 @@ while running:
         elif keys[pg.K_w] or keys[pg.K_UP]:
             if moving != "Down" and previous_move == False:
                 moving, previous_move = "Up", moving
-        print(moving, previous_move)
     if moving != False:
         started = True
 
